@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>We Chat-GhostS</title>
+	<style>
+		body
+		{
+			background: #f9f9f9;
+		}
+
+		#container{
+			width:700px;
+			margin:0 auto;
+		}
+		#container-2
+
+		{
+			float:left;
+			border:solid 3px #fff;
+			border-radius: 10px;
+			background:#f4f4f4;
+			padding:10px;
+			margin-left:20px;
+			width:255px;
+			max-height:600px;
+			margin-bottom: 20px;
+			text-align: center;
+		}
+
+		#chatWindow{
+			width: 370px;
+			min-height: 300px;
+			max-height: 10000px;
+			background: #fff;
+			margin-bottom: 20px;
+			border:solid 2px #fff;
+		}
+
+		#mainWrapper{
+			display:none;
+		}
+
+		#chatWrapper{
+			float:left;
+			border:2px #fff solid;
+			border-radius: 10px;
+			background:#f4f4f4;
+			padding:10px;
+		}
+
+		#userWrapper{
+			float:left;
+			border:2px #fff solid;
+			border-radius: 10px;
+			background:#f4f4f4;
+			padding:10px;
+			margin-left:20px;
+			color: #a6af13;
+			font-size: 18px;
+			font-weight: bold;
+			text-align: center;
+			width:255px;
+			max-height:1000px;
+			margin-bottom: 20px;
+		}
+
+		#namesWrapper{
+			float:left;
+			border:3px #fff solid;
+			border-radius: 10px;
+			background:#f4f4f4;
+			padding:10px;
+			margin-left:20px;
+		}
+
+		input
+		{
+			height:30px;
+			border:solid 1px #fff;
+			width: 100%;
+			margin-bottom: 10px;
+		}
+		a
+		{			
+			color: 262626;
+			font-size: 12px;
+			font-weight: bold;
+		}
+		p
+		{
+			margin: 0;
+			padding: 0;
+			font-weight: bold;
+			border:solid 1px #fff;
+			border-color: #f9f9f6;
+			color: #a6af13;
+			margin-bottom: 3px;
+		}
+		h2
+		{
+			margin: 0;
+			padding: 0;
+			font-weight: bold;
+			color: #a6af13;
+			border:solid 2px #fff;
+			background: #f4f4f4;
+			border-color: #fff;
+			margin-bottom: 20px;
+			text-align: center;
+		}
+		#error
+		{
+			margin-bottom: 10px;
+			font-weight: bold;
+		}
+		h3
+		{
+			color: #a6af13;
+			font-weight: bold;
+			border:solid 2px #fff;
+		}
+		.p3
+		{
+			font-size: 11;
+		}
+		h4
+		{
+			color: #a6af13;
+			font-weight: bold;
+		}
+		h5
+		{
+			color: #a6af13;
+			font-weight: bold;
+		}
+		h6
+		{
+			color: #a6af13;
+			font-weight: bold;
+			border:solid 2px #fff;
+			font-size: 20px;
+			text-align: center;
+			margin: 0;
+			padding: 0;
+			margin-bottom: 10px;
+		}
+
+	</style>
+</head>
+<body>
+	<div id="container">
+		<div id="namesWrapper">
+			<h2>We Chat-GhostS</h2>
+			<div id="error"></div>
+			<div class="input-group">
+				<p>Email</p>
+				<div id="error"></div>
+				<input type="email" name="email" value="">
+			</div>	
+			<p>Create Username:</p>
+			<form id="usernameForm">
+				<input type="text" size="35" id="username">
+			<p>Create Password</p>	
+				<input type="Password" name="" placeholder="">
+			<input type="submit" value="Sign In">	
+			<a href="#">hey gays it just begin</a>
+			</form>	
+		</div>
+
+		<div id="mainWrapper">
+			<h2>We Chat-GhostS</h2>
+			<div id="chatWrapper">
+				<div id="chatWindow"></div>
+				<form id="messageForm">
+					<input type="text" size="35" id="message" placeholder="Say Something...">
+					<input type="submit" value="Submit">
+				</form>
+			</div>
+
+			<div id="userWrapper">
+				<h6>Online Users</h6>
+				<div id="users"></div>
+			</div>
+
+			<div id="container-2">
+				<h3>Contact Info</h3>
+				<h4>Author: omar abdrabo</h4>
+				<h5>linked in: /in/omarabdrabo/</h5>
+				<h5>GetHub: /omarabdrabo</h5>
+				<h5>facebook: /3Omaira</h5>
+			</div>	
+		</div>
+	</div>
+
+
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
+		<script>
+		$(function(){
+			var socket = io.connect();
+			var $messageForm = $('#messageForm');
+			var $message = $('#message');
+			var $chat = $('#chatWindow');
+			var $usernameForm = $('#usernameForm');
+			var $Email = $('#Email');
+			var $PasswordForm = $('PasswordForm');
+			var $users = $('#users');
+			var $username = $('#username');
+			var $error = $('#error');
+			var $Password = $('#Password');
+			var $error = $('#error');
+
+			$usernameForm.submit(function(e){
+				e.preventDefault();
+				socket.emit('new user', $username.val(), function(data){
+					if(data){
+						$('#namesWrapper').hide();
+						$('#mainWrapper').show();
+					} else{;
+						$error.html('Enter Valid Data');
+					} 
+				});
+			});
+
+			socket.on('usernames', function(data){
+				var html = '';
+				for(i = 0;i < data.length;i++){
+					html += data[i] + '<br>';
+				}
+				$users.html(html);
+			});
+
+			$messageForm.submit(function(e){
+				e.preventDefault();
+				socket.emit('send message', $message.val());
+				$message.val('');
+			});
+
+			socket.on('new message', function(data){
+				$chat.append('<strong>'+data.user+'</strong>: '+data.msg+'<br>');
+			});
+
+		});
+		</script>
+</body>
+</html>
