@@ -1,0 +1,31 @@
+hey gays
+
+my name is omar abdrabo ,
+
+and this app made for coursera "cyber security specialization track" as cyber security capaston project
+i tried to make this app more usable and easy for any body so hope to enjoy.
+
+if you have any comment please don't hesitate to contact me.
+Email: "omar.abdrabo.96@hotmail.com";
+
+when you try to use this simple app on local server
+follow this steps.
+
+1-for windows download Gitbash from:https://git-for-windows.github.io/
+
+2-after setup this app open my app folder then run the git app
+
+3-to run the server use this command : node server
+
+4-open your browser prefer chrome or firefox for http connection
+
+5-url : localhost:5813 .
+
+6-heroku url : http://peaceful-scrubland-80847.herokuapp.com/
+
+6-good luck for any information contact me.
+
+
+
+
+ 
